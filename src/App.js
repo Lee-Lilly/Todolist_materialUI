@@ -10,9 +10,9 @@ function App() {
           TODO List, Please !
         </p>
       </header>
-      <body>
+     
         <Todolist />
-      </body>
+    
     </div>
   ); 
 
