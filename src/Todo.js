@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactTable from 'react-table-v6';
+import 'react-table-v6/react-table.css';
 
 function Todolist() {
 
@@ -15,14 +17,25 @@ function Todolist() {
     }
 
     const deleteTodo =(event) =>{
-        event.preventDefault(); 
-        console.log(todos); //initial state of todolist
-        let index = event.target.id; //get event index
-        console.log(index);
-        todos.splice(index, 1);  //delete the element
-        console.log(todos); // todolist after deleted one element
-        setTodos([...todos]); //set the component state for rendering
+        event.preventDefault();
+        setTodos(todos.filter((todo, index) => index !== parseInt(event.target.id))); 
     }
+
+    const columns =[
+        {//first column
+            Header: 'Date',
+            accessor: 'date' //data comes from date attribute
+        },
+        {//second column
+            Header: 'Todo',
+            accessor: 'task' //data comes from task attribute
+        },
+        { //third column no header, only event controller in cells
+            Cell: row => (<button id={row.index} onClick={deleteTodo}>Delete</button>),
+            filterable: false,
+            sortable: false
+        }
+    ]
 
     return (
         <div className="container">
@@ -37,25 +50,8 @@ function Todolist() {
                 </div>
                     <input type="submit" className="btn btn-success" value="Add"></input>
             </form>
-       
-            <table className="table table-striped text-center table-responsive" id="todolist">
-                <thead>
-                    <tr>
-                        <th className="text-center">Date</th>
-                        <th className="text-center">TODOs</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        todos.map((todo, index) =>
-                            <tr key={index}>
-                                <td>{todo.date}</td>
-                                <td>{todo.task}</td>
-                                <td><button className="btn btn-danger" onClick={deleteTodo} id = {index}>Delete</button></td>
-                            </tr>)
-                    }
-                </ tbody>
-            </table>
+            <ReactTable data={todos} columns={columns} filterable={true}/>
+    
         </div>
     );
 }
