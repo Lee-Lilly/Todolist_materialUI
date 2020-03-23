@@ -8,11 +8,12 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Button from '@material-ui/core/Button';
 
+import Grid from '@material-ui/core/Grid';
 function Todolist() {
 
-    const [todo, setTodo] = useState({ date: '', task: '' });
+    const [todo, setTodo] = useState({ date: new Date(), task: '' });
     const [todoList, setTodoList] = useState([]);
-
+ 
     const dateChanged = (event) => {
         setTodo({ ...todo, date: event.target.value});
     }
@@ -35,15 +36,20 @@ function Todolist() {
             <form onSubmit={addTodo} className="navbar-form">
                 <div className="form-group col-md-6">
                     <span className="badge">Date</span>
-                    <TextField name="date" placeholder="Duedate" className="form-control"type="date" value={todo.date} onChange={date => dateChanged(date)} required />
+                        <Grid container justify="space-around">
+                            <TextField
+                                type="date" className="form-control" value={todo.date} onChange={date =>dateChanged(date)}/>
+                        </Grid> 
                 </div>
                 <div className="form-group col-md-6">
                     <span className="badge">Todo</span>
-                    <TextField name="task" placeholder="Description" className="form-control" type="text" value={todo.task} onChange={task =>inputChanged(task)} required />
+                     <Grid container justify="space-around">
+                        <TextField placeholder="Description" className="form-control" type="text" value={todo.task} onChange={task =>inputChanged(task)} required />
+                    </Grid>
                 </div>
                 <Button onClick={addTodo} variant="contained" color="primary">Add</Button>
             </form>
-            <Table selectable={false}>
+            <Table>
                 <TableHead>
                     <TableRow>
                         <TableCell>Date</TableCell>
