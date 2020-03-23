@@ -1,56 +1,65 @@
-import React from 'react';
-import ReactTable from 'react-table-v6';
+import React, { useState } from 'react';
 import 'react-table-v6/react-table.css';
+import TextField from '@material-ui/core/TextField';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import Button from '@material-ui/core/Button';
 
 function Todolist() {
 
-    const [task, setTask] = React.useState({ date: '', task: '' });
-    const [todos, setTodos] = React.useState([]);
+    const [todo, setTodo] = useState({ date: '', task: '' });
+    const [todoList, setTodoList] = useState([]);
+
+    const dateChanged = (event) => {
+        setTodo({ ...todo, date: event.target.value});
+    }
 
     const inputChanged = (event) => {
-        setTask({ ...task, [event.target.name]: event.target.value });
+        setTodo({ ...todo, task: event.target.value});
     }
 
     const addTodo = (event) => {
         event.preventDefault();
-        setTodos([...todos, task]);
+        setTodoList([...todoList, todo]);
     }
 
     const deleteTodo =(event) =>{
-        event.preventDefault();
-        setTodos(todos.filter((todo, index) => index !== parseInt(event.target.id))); 
+        setTodoList(todoList.filter((todo, index) => index !== parseInt(event.target.id))); 
     }
-
-    const columns =[
-        {//first column
-            Header: 'Date',
-            accessor: 'date' //data comes from date attribute
-        },
-        {//second column
-            Header: 'Todo',
-            accessor: 'task' //data comes from task attribute
-        },
-        { //third column no header, only event controller in cells
-            Cell: row => (<button id={row.index} onClick={deleteTodo}>Delete</button>),
-            filterable: false,
-            sortable: false
-        }
-    ]
 
     return (
         <div className="container">
             <form onSubmit={addTodo} className="navbar-form">
                 <div className="form-group col-md-6">
                     <span className="badge">Date</span>
-                    <input name="date" className="form-control" type="date" value={task.date} onChange={inputChanged} required></input>
+                    <TextField name="date" placeholder="Duedate" className="form-control"type="date" value={todo.date} onChange={date => dateChanged(date)} required />
                 </div>
                 <div className="form-group col-md-6">
                     <span className="badge">Todo</span>
-                    <input name="task" className="form-control" type="text" value={task.todo} onChange={inputChanged} required></input>
+                    <TextField name="task" placeholder="Description" className="form-control" type="text" value={todo.task} onChange={task =>inputChanged(task)} required />
                 </div>
-                    <input type="submit" className="btn btn-success" value="Add"></input>
+                <Button onClick={addTodo} variant="contained" color="primary">Add</Button>
             </form>
-            <ReactTable data={todos} columns={columns} filterable={true}/>
+            <Table selectable={false}>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Date</TableCell>
+                        <TableCell>Description</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {todoList.map((item, index) =>
+                        <TableRow key={index}>
+                            <TableCell>{item.date}</TableCell>
+                            <TableCell>{item.task}</TableCell>
+                            <TableCell><button id={index} onClick={deleteTodo} className="btn btn-warning">Delete</button></TableCell>
+                        </TableRow>)}
+                </TableBody>
+            </Table>
+           
     
         </div>
     );

@@ -7,7 +7,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <p>
-          TODO List, Please !
+          Simple TODO List
         </p>
       </header>
      
