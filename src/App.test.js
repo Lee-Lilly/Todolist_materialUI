@@ -20,20 +20,20 @@ it('renders without crashing', () => {
 
 test('renders todotable', () => {
   const row = [
-    { task: 'Go to coffee', date: '24/11/2019' }
+    { task: 'Go to coffee', date: '24/11/2019'}
   ]
   const todotable = render(<TodoTable todos={row} />);
   expect(todotable.container).toHaveTextContent('Go to coffee');
 })
 
 test('add todo', () => {
-  const { container, getByText, getByPlaceholderText } = render(<Todo />);
+  const { container, getByText, getByLabelText } = render(<Todo />);
 
-  const desc = getByPlaceholderText('Description');
-  fireEvent.change(desc, { target: { value: 'Go to coffee' } })
+  const desc = getByLabelText('Todo');
+  fireEvent.change(desc, { target: { value: 'Go to coffee' } });
 
-  const date = getByPlaceholderText('Date');
-  fireEvent.change(date, { target: { value: '29.11.2019' } })
+  const date = getByLabelText('Date');
+  fireEvent.change(date, { target: { value:'24/11/2019'} });
 
   const button = getByText('Add');
   fireEvent.click(button);
