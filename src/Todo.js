@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import 'react-table-v6/react-table.css';
 import TextField from '@material-ui/core/TextField';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
 import Button from '@material-ui/core/Button';
-
 import Grid from '@material-ui/core/Grid';
+
+import TodoTable from './TodoTable';
+
 function Todolist() {
 
     const [todo, setTodo] = useState({ date: new Date(), task: '' });
@@ -27,6 +24,11 @@ function Todolist() {
         setTodoList([...todoList, todo]);
     }
 
+    const clearTodos = (event) => {
+        event.preventDefault();
+        setTodoList([]);
+    }
+
     const deleteTodo =(event) =>{
         setTodoList(todoList.filter((todo, index) => index !== parseInt(event.target.id))); 
     }
@@ -38,7 +40,7 @@ function Todolist() {
                     <span className="badge">Date</span>
                         <Grid container justify="space-around">
                             <TextField
-                                type="date" className="form-control" value={todo.date} onChange={date =>dateChanged(date)}/>
+                            type="date" placeholder="Date" className="form-control" value={todo.date} onChange={date =>dateChanged(date)}/>
                         </Grid> 
                 </div>
                 <div className="form-group col-md-6">
@@ -47,26 +49,11 @@ function Todolist() {
                         <TextField placeholder="Description" className="form-control" type="text" value={todo.task} onChange={task =>inputChanged(task)} required />
                     </Grid>
                 </div>
-                <Button onClick={addTodo} variant="contained" color="primary">Add</Button>
+                <Button onClick={addTodo} variant="contained" color="primary" float="left">Add</Button>
+                <Button onClick={clearTodos} variant="contained" color="secondary" float="right">Clear All</Button>
+            
             </form>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Description</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {todoList.map((item, index) =>
-                        <TableRow key={index}>
-                            <TableCell>{item.date}</TableCell>
-                            <TableCell>{item.task}</TableCell>
-                            <TableCell><button id={index} onClick={deleteTodo} className="btn btn-warning">Delete</button></TableCell>
-                        </TableRow>)}
-                </TableBody>
-            </Table>
-           
-    
+            <TodoTable todos={todoList} deleteTodo={deleteTodo}/>
         </div>
     );
 }
