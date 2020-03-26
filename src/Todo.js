@@ -17,7 +17,7 @@ function Todolist() {
     const [todoList, setTodoList] = useState([]);
  
     const dateChanged = date => {
-        setTodo({ ...todo, date: date.toString().substring(0, 15)});
+        setTodo({ ...todo, date: date});
     }
 
     const inputChanged = (event) => {
@@ -26,17 +26,23 @@ function Todolist() {
 
     const addTodo = (event) => {
         event.preventDefault();
-        setTodoList([...todoList, todo]);
-        setTodo({date: new Date(), task:''});
+        //add evnt only if task are non-empty strings 
+        if (todo.task !== ''){
+            const newTodo = {date: todo.date, task: todo.task}
+            setTodoList([...todoList, newTodo]);
+            setTodo({date: new Date(), task:''});
+        } 
+        else{
+            alert('Empty field can not be added');   
+        }    
     }
 
-    const clearTodos = (event) => {
-        event.preventDefault();
+    const clearTodos = () => {
         setTodoList([]);
     }
 
-    const deleteTodo =(event) =>{
-        setTodoList(todoList.filter((todo, index) => index !== parseInt(event.target.id))); 
+    const deleteTodo = index => {
+        setTodoList(todoList.filter((todo, i) => i !== index)); 
     }
 
     return (
@@ -47,6 +53,7 @@ function Todolist() {
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <Grid container justify="space-around">                    
                             <KeyboardDatePicker
+                                autoOk
                                 id= "date"
                                 margin="normal"
                                 label="Date"
@@ -68,7 +75,7 @@ function Todolist() {
                     </Grid>
                 </div>
                 <Grid container justify="space-around">             
-                    <Button id="add" onClick={addTodo} variant="contained" color="primary">Add</Button>        
+                    <Button id="add" onClick={addTodo} variant="contained" color="primary" size="large">Add</Button>        
                 </Grid> 
             </form>
             <TodoTable todos={todoList} deleteTodo={deleteTodo} clearTodos={clearTodos}/>

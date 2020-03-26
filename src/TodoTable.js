@@ -5,24 +5,40 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
 
 export default function TodoTable(props) {
     return (
-        <div className="container-fluid main-container">
+        <div className="container">
             <Table>
                 <TableHead>
                     <TableRow>
                         <TableCell>Date</TableCell>
                         <TableCell>Description</TableCell>
-                        <TableCell><Button onClick={props.clearTodos} variant="contained" color="secondary">Clear All</Button></TableCell>
+                        <TableCell>
+                            <Button onClick={() =>
+                                window.confirm('Are you sure to delete all items?') && 
+                                props.clearTodos} 
+                                variant="contained" color="secondary" size="large">
+                                Clear All
+                            </Button>
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {props.todos.map((item, index) =>
                         <TableRow key={index}>
-                            <TableCell>{item.date}</TableCell>
+                            <TableCell>{item.date.toString().substring(0, 15)}</TableCell>
                             <TableCell>{item.task}</TableCell>
-                            <TableCell><button id={index} className="btn btn-warning" onClick={props.deleteTodo}>Delete</button></TableCell>
+                            <TableCell>
+                                <IconButton color="primary" aria-label="delete" 
+                                    onClick={() => 
+                                    window.confirm('Are you sure to delete this item?') && 
+                                    props.deleteTodo(index)}>
+                                <DeleteIcon fontSize="large"/>
+                                </IconButton>
+                            </TableCell>
                         </TableRow>)}
                 </TableBody>
             </Table>
