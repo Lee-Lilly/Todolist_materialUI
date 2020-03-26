@@ -17,10 +17,10 @@ export default function TodoTable(props) {
                         <TableCell>Date</TableCell>
                         <TableCell>Description</TableCell>
                         <TableCell>
-                            <Button onClick={() =>
+                            <Button variant="contained" color="secondary" size="large"
+                                onClick={(e) =>
                                 window.confirm('Are you sure to delete all items?') && 
-                                props.clearTodos} 
-                                variant="contained" color="secondary" size="large">
+                                props.clearTodos(e)}>
                                 Clear All
                             </Button>
                         </TableCell>

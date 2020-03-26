@@ -26,7 +26,7 @@ function Todolist() {
 
     const addTodo = (event) => {
         event.preventDefault();
-        //add evnt only if task are non-empty strings 
+        //add evnt if task are non-empty strings 
         if (todo.task !== ''){
             const newTodo = {date: todo.date, task: todo.task}
             setTodoList([...todoList, newTodo]);
